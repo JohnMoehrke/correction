@@ -16,9 +16,12 @@ This IG is founded on HL7 FHIR Revision {{site.data.fhir.version}} found at [{{s
 Recommended use of a [Profile on Provenance](StructureDefinition-CorrectionProvenanceProfile.html) to indicate corrections:
 
 Examples:
-- [Provenance removal](Provenance-ex-provenance-correction-removal.html) resource documenting the removal of incorrect food allergy observation. This example does not point at a resource that explains the correction, such as a DocumentReference.
-- [Provenance replacement](Provenance-ex-provenance-correction-replacement.html) Provenance resource documenting the replacement of an immunization record that was in error. This example includes a reference to a DocumentReference that explains the correction.
-- [Provenance AI corrected](Provenance-ex-ai-error-detection.html) Provenance resource documenting the detection of an error in FHIR data by an AI system.
+- [Provenance removal](Provenance-ex-correction-removal.html) resource documenting the removal of incorrect food allergy observation. This example does not point at a resource that explains the correction, such as a DocumentReference.
+- [Provenance replacement](Provenance-ex-correction-replacement.html) Provenance resource documenting the replacement of an immunization record that was in error. This example includes a reference to a DocumentReference that explains the correction.
+- [Provenance AI corrected](Provenance-ex-ai-error-detection-replacement.html) Provenance resource documenting the detection of an error in FHIR data by an AI system. The original Observation that is error is removed, and a new AllergyIntolerance resource is created to replace it.
+- [Provenance AI corrected with replacement](Provenance-ex-ai-error-detection-replacement.html) Provenance resource documenting the detection of an error in FHIR data by an AI system, where the Observation was used to record a food allergy, but the AI system detected that this should have been an AllergyIntolerance resource instead. Thus the Observation is removed, and the AllergyIntolerance is created.
+- [Provenance patient correction](Provenance-ex-patient-requested-correction.html) Provenance resource documenting a patient requested correction of their birth date.
+- [Provenance revision correction](Provenance-ex-condition-corrected.html) Provenance resource documenting the revision of a Condition resource with corrected onset date. In this case the original Condition is revised. Thus the old version history/1 is indicated as revised, and the new version history/2 is indicated as the current version.
 
 
 **changes from R4->R6 Consent:**

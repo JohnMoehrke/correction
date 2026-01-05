@@ -8,7 +8,6 @@ so that requests for data, especially from outside (e.g. HIE), can see that prev
 
 IG ticket https://jira.hl7.org/browse/FHIR-53782
 
-
 The corrected data needs to (should) have a profiled Provenance so that future use of the data can clearly see that the data was corrected.
 
 I would recommend a Profile on Provenance. (Note I recommend recording both the reference and business identifiers as they may be what is needed downstream to fully match, especially in the case of data removal)
@@ -19,11 +18,7 @@ Where Provenance.activity is given a couple of codes to indicate patient request
 
 Where Provenance.entity also points at the records corrected communication. entity.role=#instantiates
 
-
 FHIR Core Ticket: https://jira.hl7.org/browse/FHIR-53783
-
-
-[!NOTE] Trigger when AI detects the error.
 
 ## CI Build
 

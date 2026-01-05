@@ -19,7 +19,7 @@ Description: "A profile of the Provenance resource to document corrections made 
 * entity ^slicing.discriminator[0].type = #value
 * entity ^slicing.discriminator[0].path = "role"
 * entity ^slicing.rules = #open
-* entity contains removalEntry 0.* and revisionEntry 0.*
+* entity contains removalEntry 0..* MS and revisionEntry 0..* MS
 * entity[removalEntry].role = #removal
 * entity[removalEntry].what MS
 * entity[removalEntry].what ^comment = "References the resource that was removed as part of the correction."
@@ -88,11 +88,29 @@ Usage: #example
 * interpretation[=].text = "Abnormal"
 * note[+].text = "Patient has a known allergy to peanuts. Avoid all peanut-containing products."
 * performer[+] = Reference(http://example.org/Practitioner/ex-practitioner)
+* identifier[+].system = "http://example.org/observation-identifiers"
+* identifier[=].value = "obs-food-allergy-001"
 
-Instance: ex-provenance-correction-removal
+Instance: ex-allergy-corrected
+InstanceOf: AllergyIntolerance
+Title:      "Corrected Food Allergy"
+Description: "An example AllergyIntolerance resource representing a corrected food allergy record."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* clinicalStatus.coding[+] = http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical#active
+* verificationStatus.coding[+] = http://terminology.hl7.org/CodeSystem/allergyintolerance-verification#confirmed
+* type = http://hl7.org/fhir/allergy-intolerance-type#allergy
+* category[+] = http://hl7.org/fhir/allergy-intolerance-category#food
+* code.coding[+] = http://snomed.info/sct#235719002
+* code.text = "Allergy to peanuts"
+* patient = Reference(http://example.org/Patient/ex-patient)
+* onsetDateTime = "2023-01-15T10:00:00Z"
+
+
+Instance: ex-correction-removal
 InstanceOf: CorrectionProvenanceProfile
 Title: "Provenance for Correction Removal"
-Description: "Provenance resource documenting the removal of incorrect food allergy observation. This example does not point at a resource that explains the correction, such as a DocumentReference."
+Description: "Provenance resource documenting the removal of incorrect food allergy observation. This example does not point at a resource that explains the correction, such as a DocumentReference. This use-case also did not replace the concept."
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Observation/ex-observation-food)
@@ -101,9 +119,11 @@ Usage: #example
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
 * why = "Removed incorrect food allergy observation as it was found to be erroneous."
-* entity[+].role = #removal
-* entity[=].what = Reference(Observation/ex-observation-food)
-* entity[=].what.display = "Incorrect Food Allergy Observation"
+* entity[removalEntry].role = #removal
+* entity[removalEntry].what = Reference(Observation/ex-observation-food)
+* entity[removalEntry].what.display = "Incorrect Food Allergy Observation"
+* entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
+* entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
 * patient = Reference(https://example.org/Patient/ex-patient)
 
 Instance: ex-immunization-wrong
@@ -124,6 +144,8 @@ Usage: #example
 * route.coding[+] = http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration#IM
 * route.text = "Intramuscular"
 * note[+].text = "Patient tolerated the vaccine well with no immediate adverse reactions."
+* identifier.system = "http://example.org/immunization-identifiers"
+* identifier.value = "immu-covid19-001"
 
 Instance: ex-immunization-correction
 InstanceOf: Immunization
@@ -145,8 +167,10 @@ Usage: #example
 * note[+].text = "Corrected immunization record to reflect the accurate vaccine dose
   and administration site."
 * note[+].text = "Original record indicated 100 mcg dose in left arm; corrected to 50 mcg dose in right arm."
+* identifier.system = "http://example.org/immunization-identifiers"
+* identifier.value = "immu-covid19-001-corrected"
 
-Instance: ex-provenance-correction-replacement
+Instance: ex-correction-replacement
 InstanceOf: CorrectionProvenanceProfile
 Title: "Provenance for Immunization Replacement"
 Description: "Provenance resource documenting the replacement of an immunization record that was in error. This example includes a reference to a DocumentReference that explains the correction."
@@ -158,9 +182,11 @@ Usage: #example
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
 * why = "Corrected immunization record to reflect accurate vaccine information."
-* entity[+].role = #removal
-* entity[=].what = Reference(Immunization/ex-immunization-wrong)
-* entity[=].what.display = "Original Immunization Record with Errors"
+* entity[removalEntry].role = #removal
+* entity[removalEntry].what = Reference(Immunization/ex-immunization-wrong)
+* entity[removalEntry].what.display = "Original Immunization Record with Errors"
+* entity[removalEntry].what.identifier.system = "http://example.org/immunization-identifiers"
+* entity[removalEntry].what.identifier.value = "immu-covid19-001"
 * patient = Reference(https://example.org/Patient/ex-patient)
 
 /* R4 */
@@ -193,20 +219,115 @@ Usage: #example
 * author[+] = Reference(https://example.org/Practitioner/ex-practitioner)
 * custodian = Reference(https://example.org/Organization/ex-organization)
 
-Instance: ex-ai-error-detection
+Instance: ex-ai-error-detection-replacement
 InstanceOf: CorrectionProvenanceProfile
 Title: "Provenance for AI Error Detection"
-Description: "Provenance resource documenting the detection of an error in FHIR data by an AI system."
+Description: "Provenance resource documenting the detection of an error in FHIR data by an AI system. Where Observation was used to record a food allergy, but the AI system detected that this should have been an AllergyIntolerance resource instead. Thus the Observation is removed, and the AllergyIntolerance is created."
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
-* target[+] = Reference(Observation/ex-observation-food)
+* target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
 * recorded = "2024-06-01T14:00:00Z"
 * agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
 * agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier 
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* why = "AI system detected an inconsistency in the food allergy observation data."
-* entity[+].role = #revision
-* entity[=].what = Reference(Observation/ex-observation-food)
-* entity[=].what.display = "Food Allergy Observation with Detected Error"
+* why = "AI system detected an inconsistency in the food allergy Observation data should have been an AllergyIntolerance."
+* entity[removalEntry].role = #removal
+* entity[removalEntry].what = Reference(Observation/ex-observation-food)
+* entity[removalEntry].what.display = "Food Allergy Observation with Detected Error"
+* entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
+* entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
 * patient = Reference(https://example.org/Patient/ex-patient)
 
+Instance: ex-ai-duplicate-detection
+InstanceOf: CorrectionProvenanceProfile
+Title: "Provenance for AI Duplicate Detection"
+Description: "Provenance resource documenting the detection of duplicate FHIR data by an AI system. Where an Observation resources and an AllergyIntolerance were found to be duplicates. Thus the correction removed the Observation, and revised the AllergyIntolerance (updating the AllergyIntolerance with knowledge from the Observation like onset)."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
+* recorded = "2024-06-01T15:00:00Z"
+* agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
+* agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
+* why = "AI system detected duplicate allergy information between Observation and AllergyIntolerance resources."
+* entity[removalEntry].role = #removal
+* entity[removalEntry].what = Reference(Observation/ex-observation-food)
+* entity[removalEntry].what.display = "Duplicate Food Allergy Observation"
+* entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
+* entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
+* entity[revisionEntry].role = #revision
+* entity[revisionEntry].what = Reference(AllergyIntolerance/ex-allergy-corrected)
+* entity[revisionEntry].what.display = "Revised AllergyIntolerance after Duplicate Detection"
+* entity[revisionEntry].what.identifier.system = "http://example.org/allergyintolerance-identifiers"
+* entity[revisionEntry].what.identifier.value = "allergy-peanut-001"
+* patient = Reference(https://example.org/Patient/ex-patient)
+
+
+/* Condition foo has a version/history 1 that is found to be incorrect, so a revision to version/history 2 is created to correct the error */
+Instance: ex-condition-initial
+InstanceOf: Condition
+Title:      "Initial Condition Example"
+Description: "An example Condition resource that has an error that version 2 will fix."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* clinicalStatus.coding[+] = http://terminology.hl7.org/CodeSystem/condition-clinical#active
+* code.coding[+] = http://snomed.info/sct#44054006
+* code.text = "Diabetes mellitus type 2"
+* subject = Reference(https://example.org/Patient/ex-patient)
+* onsetDateTime = "2020-05-20T00:00:00Z"
+* identifier.system = "http://example.org/condition-identifiers"
+* identifier.value = "condition-diabetes-001"
+
+Instance: ex-corrected
+InstanceOf: Condition
+Title:      "Corrected Condition Example"
+Description: "An example Condition resource that corrects the error found in version 1."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* clinicalStatus.coding[+] = http://terminology.hl7.org/CodeSystem/condition-clinical#active
+* code.coding[+] = http://snomed.info/sct#44054006
+* code.text = "Diabetes mellitus type 2"
+* subject = Reference(https://example.org/Patient/ex-patient)
+* onsetDateTime = "2019-05-20T00:00:00Z"  // Corrected onset date
+* identifier.system = "http://example.org/condition-identifiers"
+* identifier.value = "condition-diabetes-001"
+
+Instance: ex-condition-corrected
+InstanceOf: CorrectionProvenanceProfile
+Title: "Provenance for Condition Correction"
+Description: "Provenance resource documenting the correction made to a Condition resource. Note that the IG does not utilize history/1 and history/2, but this example shows how a correction Provenance would point at the initial incorrect resource and the corrected resource."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(Condition/ex-corrected)
+* recorded = "2024-06-01T16:00:00Z"
+* agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
+* agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
+* why = "Corrected onset date of Condition resource."
+* entity[revisionEntry].role = #revision
+* entity[revisionEntry].what = Reference(Condition/ex-condition-initial)
+* entity[revisionEntry].what.display = "Initial Condition with Incorrect Onset Date"
+* entity[revisionEntry].what.identifier.system = "http://example.org/condition-identifiers"
+* entity[revisionEntry].what.identifier.value = "condition-diabetes-001"
+* patient = Reference(https://example.org/Patient/ex-patient)
+
+
+Instance: ex-patient-requested-correction
+InstanceOf: CorrectionProvenanceProfile
+Title: "Provenance for Patient Requested Correction"
+Description: "Provenance resource documenting a patient requested correction of their birth date. This example shows how the IG for Patient Requested Corrections, which uses Communication to document the request, can be linked to a Correction Provenance that documents the actual correction made to the Patient resource. The Provenance.agent is the Patient as the data subject requesting the correction."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(Patient/ex-patient)
+* recorded = "2024-06-01T17:00:00Z"
+* agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
+* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
+* why = "Patient requested correction of birth date."
+* entity[revisionEntry].role = #revision
+* entity[revisionEntry].what = Reference(Patient/ex-patient)
+* entity[revisionEntry].what.display = "Patient Resource with Corrected Birth Date"
+* entity[revisionEntry].what.identifier.system = "http://example.org/mrn"
+* entity[revisionEntry].what.identifier.value = "123456"
+* patient = Reference(https://example.org/Patient/ex-patient)
+* basedOn = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
