@@ -1,0 +1,45 @@
+
+Shows how Provenance can be used to track corrections to FHIR data. When data are corrected, especially when the Patient themselves reported that the data was wrong, there needs to be breadcrumbs left behind.
+
+1. So that future uses understand the past might have seen different data
+2. So that requests for data, especially from outside (e.g. HIE), can see that previous data has been corrected.
+
+<div markdown="1" class="stu-note">
+
+<br/>
+This IG is founded on HL7 FHIR Revision {{site.data.fhir.version}} found at [{{site.data.fhir.path}}]({{site.data.fhir.path}})
+<br/>
+</div>
+
+Recommended use of a [Profile on Provenance](StructureDefinition-CorrectionProvenanceProfile.html) to indicate corrections:
+
+Examples:
+- [Provenance removal](Provenance-ex-provenance-correction-removal.html) resource documenting the removal of incorrect food allergy observation. This example does not point at a resource that explains the correction, such as a DocumentReference.
+- [Provenance replacement](Provenance-ex-provenance-correction-replacement.html) Provenance resource documenting the replacement of an immunization record that was in error. This example includes a reference to a DocumentReference that explains the correction.
+- [Provenance AI corrected](Provenance-ex-ai-error-detection.html) Provenance resource documenting the detection of an error in FHIR data by an AI system.
+
+
+**changes from R4->R6 Consent:**
+
+In R6 basedOn would be used to hold the evidence for the correction. Where in R4 would use entity with role=instantiates.
+
+
+### Source
+
+The source code for this Implementation Guide can be found on [GitHub](https://github.com/JohnMoehrke/correction)
+
+#### Cross Version Analysis
+
+{% include cross-version-analysis.xhtml %}
+
+#### Dependency Table
+
+{% include dependency-table.xhtml %}
+
+#### Globals Table
+
+{% include globals-table.xhtml %}
+
+#### IP Statements
+
+{% include ip-statements.xhtml %}
