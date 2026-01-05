@@ -1,5 +1,7 @@
 
-Shows how Provenance can be used to track corrections to FHIR data. When data are corrected, especially when the Patient themselves reported that the data was wrong, there needs to be breadcrumbs left behind.
+Shows how Provenance can be used to track corrections to FHIR data. When data are corrected, especially when the Patient themselves reported that the data was wrong, there needs to be breadcrumbs left behind. Correction is a form of updating of data, but with the special need to indicate that previous data was in error. Some corrections result in the previous data being removed, while others result in the previous data being replaced with corrected data.
+
+Therefore the needs to be a special indication of a correction Provenance, as distinct from a general update Provenance, with the following goals:
 
 1. So that future uses understand the past might have seen different data
 2. So that requests for data, especially from outside (e.g. HIE), can see that previous data has been corrected.

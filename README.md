@@ -23,7 +23,7 @@ Where Provenance.entity also points at the records corrected communication. enti
 FHIR Core Ticket: https://jira.hl7.org/browse/FHIR-53783
 
 
-TODO: Trigger when AI detects the error.
+[!NOTE] Trigger when AI detects the error.
 
 ## CI Build
 

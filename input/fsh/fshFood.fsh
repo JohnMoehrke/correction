@@ -16,6 +16,20 @@ Description: "A profile of the Provenance resource to document corrections made 
 * agent ^comment = "The individual or system responsible for making the correction."
 * entity MS
 * entity ^comment = "Details about the corrected resource and the nature of the correction."
+* entity ^slicing.discriminator[0].type = #value
+* entity ^slicing.discriminator[0].path = "role"
+* entity ^slicing.rules = #open
+* entity contains removalEntry 0.* and revisionEntry 0.*
+* entity[removalEntry].role = #removal
+* entity[removalEntry].what MS
+* entity[removalEntry].what ^comment = "References the resource that was removed as part of the correction."
+* entity[removalEntry].what.identifier MS
+* entity[removalEntry].what.identifier ^comment = "Identifier of the removed resource for traceability and de-duplication support."
+* entity[revisionEntry].role = #revision
+* entity[revisionEntry].what MS
+* entity[revisionEntry].what ^comment = "References the resource that was revised as part of the correction."
+* entity[revisionEntry].what.identifier MS
+* entity[revisionEntry].what.identifier ^comment = "Identifier of the revised resource for traceability and de-duplication support."
 * basedOn MS
 * basedOn ^comment = "References the reason for the correction, such as a DocumentReference containing correction details. In R4 this is an additional entity[] with role = instantiates."
 
