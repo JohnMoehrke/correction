@@ -83,7 +83,7 @@ I could not find an existing FHIR Document section that covers this topic. For e
 - Section code: `http://loinc.org#77472-9` (Information integrity attribute)
 - Section title: Corrections to Data
 - Section text: Text summary of the corrections made.
-- Section entries: Provenance resources documenting corrections made to the patient's data.
+- Section entries: Provenance resources documenting corrections made to the patient's data following [the correction Profile on Provenance](StructureDefinition-CorrectionProvenanceProfile.html].
 
 Note that loinc code 77472-9 is "Information integrity attribute", which seems appropriate for this section. I am open to other code suggestions.
 
