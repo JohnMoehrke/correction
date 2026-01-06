@@ -5,7 +5,8 @@
 # See https://github.com/FHIR/sample-ig/blob/master/input/ignoreWarnings.txt for examples
 
 # inherited issue from core
-MSG_DEPENDS_ON_DEPRECATED
+MSG_DRAFT
+MSG_EXPERIMENTAL
 
-# The XACML PolicyID is identified by type, not system
-Coding_has_no_system__cannot_validate
+# inherited
+The extension http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet|5.2.0 is deprecated
