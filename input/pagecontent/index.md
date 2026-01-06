@@ -48,7 +48,7 @@ Examples:
 - [Provenance revision correction](Provenance-ex-condition-corrected.html) Provenance resource documenting the revision of a Condition resource with corrected onset date. In this case the original Condition is revised. Thus the old version history/1 is indicated as revised, and the new version history/2 is indicated as the current version.
 
 
-**changes from R4->R6 Consent:**
+**changes from R4->R6 Provenance:**
 
 - In R6 `basedOn` would be used to hold the evidence for the correction. Where in R4 would use `entity` with `role=derivation`, and in R5 with `role=instantiates`.
 - In R6 `patient` element exists. Same in R6. R4 didn't have patient, so other methods would be needed to find all Provenance pointing at a patient's data.
