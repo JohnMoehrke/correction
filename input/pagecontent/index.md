@@ -53,6 +53,7 @@ Examples:
 - In R6 `basedOn` would be used to hold the evidence for the correction. Where in R4 would use `entity` with `role=derivation`, and in R5 with `role=instantiates`.
 - In R6 `patient` element exists. Same in R6. R4 didn't have patient, so other methods would be needed to find all Provenance pointing at a patient's data.
 - In R6 `why` exists. This does not exist in R4 or R5. Sometimes the `activity.text` would be used for this.
+- In R6 and R5 `authorization` is a codeableReference, where in R5 `reason` is used to hold the PurposeOfUse
 
 ### Discovering Corrections
 

@@ -22,9 +22,9 @@ Description: "A profile of the Provenance resource to document corrections made 
 * activity MS
 * activity 1..1
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason MS
-* reason from CorrectionPurposesVS
-* reason ^comment = "The activity that resulted in the correction, e.g., data review or error detection."
+* authorization MS
+* authorization from CorrectionPurposesVS
+* authorization ^comment = "The activity that resulted in the correction, e.g., data review or error detection."
 * agent MS
 * agent ^comment = "The individual or system responsible for making the correction."
 * entity MS
@@ -44,17 +44,17 @@ Description: "A profile of the Provenance resource to document corrections made 
 * entity[revisionEntry].what.identifier MS
 * entity[revisionEntry].what.identifier ^comment = "Identifier of the revised resource for traceability and de-duplication support."
 /* R4 and R5 */
-* entity contains reasonBasedOn 0..* MS
-* entity[reasonBasedOn].role = #derivation // later changed to instantiates in R5 and basedOn in R6
-* entity[reasonBasedOn].what MS
-* entity[reasonBasedOn].what ^comment = "References the resource that provided the basis for the correction, such as a DocumentReference containing correction details."
-/* R6
+//* entity contains reasonBasedOn 0..* MS
+//* entity[reasonBasedOn].role = #derivation // later changed to instantiates in R5 and basedOn in R6
+//* entity[reasonBasedOn].what MS
+//* entity[reasonBasedOn].what ^comment = "References the resource that provided the basis for the correction, such as a DocumentReference containing correction details."
+/* R6 */
 * basedOn MS
 * basedOn ^comment = "References the reason for the correction, such as a DocumentReference containing correction details. In R4 this is an additional entity[] with role = instantiates."
 * why 1..1 MS
 * why ^comment = "The reason for the correction."
+/*  */
 
-*/
 
 
 
@@ -142,13 +142,13 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-//* why = "Removed incorrect food allergy observation as it was found to be erroneous."
+* why = "Removed incorrect food allergy observation as it was found to be erroneous."
 * entity[removalEntry].role = #removal
 * entity[removalEntry].what = Reference(Observation/ex-observation-food)
 * entity[removalEntry].what.display = "Incorrect Food Allergy Observation"
 * entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
 * entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
-//* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(https://example.org/Patient/ex-patient)
 
 Instance: ex-immunization-wrong
 InstanceOf: Immunization
@@ -205,24 +205,24 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
-//* why = "Corrected immunization record to reflect accurate vaccine information."
+* authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
+* why = "Corrected immunization record to reflect accurate vaccine information."
 * entity[removalEntry].role = #removal
 * entity[removalEntry].what = Reference(Immunization/ex-immunization-wrong)
 * entity[removalEntry].what.display = "Original Immunization Record with Errors"
 * entity[removalEntry].what.identifier.system = "http://example.org/immunization-identifiers"
 * entity[removalEntry].what.identifier.value = "immu-covid19-001"
-//* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(https://example.org/Patient/ex-patient)
 
 /* R4 */
 
-* entity[reasonBasedOn].role = #derivation
-* entity[reasonBasedOn].what = Reference(DocumentReference/ex-documentation-immunization-correction)
-* entity[reasonBasedOn].what.display = "Documentation of Immunization Correction"
+//* entity[reasonBasedOn].role = #derivation
+//* entity[reasonBasedOn].what = Reference(DocumentReference/ex-documentation-immunization-correction)
+//* entity[reasonBasedOn].what.display = "Documentation of Immunization Correction"
 
 /* R4 */
 /* R6 */
-//* basedOn[+] = Reference(DocumentReference/ex-documentation-immunization-correction)
+* basedOn[+] = Reference(DocumentReference/ex-documentation-immunization-correction)
 /* R6 */
 
 Instance: ex-documentation-immunization-correction
@@ -255,14 +255,14 @@ Usage: #example
 * agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
 * agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier 
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
-//* why = "AI system detected an inconsistency in the food allergy Observation data should have been an AllergyIntolerance."
+* authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
+* why = "AI system detected an inconsistency in the food allergy Observation data should have been an AllergyIntolerance."
 * entity[removalEntry].role = #removal
 * entity[removalEntry].what = Reference(Observation/ex-observation-food)
 * entity[removalEntry].what.display = "Food Allergy Observation with Detected Error"
 * entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
 * entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
-//* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(https://example.org/Patient/ex-patient)
 
 Instance: ex-ai-duplicate-detection
 InstanceOf: CorrectionProvenanceProfile
@@ -275,8 +275,8 @@ Usage: #example
 * agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
 * agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
-//* why = "AI system detected duplicate allergy information between Observation and AllergyIntolerance resources."
+* authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
+* why = "AI system detected duplicate allergy information between Observation and AllergyIntolerance resources."
 * entity[removalEntry].role = #removal
 * entity[removalEntry].what = Reference(Observation/ex-observation-food)
 * entity[removalEntry].what.display = "Duplicate Food Allergy Observation"
@@ -287,7 +287,7 @@ Usage: #example
 * entity[revisionEntry].what.display = "Revised AllergyIntolerance after Duplicate Detection"
 * entity[revisionEntry].what.identifier.system = "http://example.org/allergyintolerance-identifiers"
 * entity[revisionEntry].what.identifier.value = "allergy-peanut-001"
-//* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(https://example.org/Patient/ex-patient)
 
 
 /* Condition foo has a version/history 1 that is found to be incorrect, so a revision to version/history 2 is created to correct the error */
@@ -330,13 +330,13 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-//* why = "Corrected onset date of Condition resource."
+* why = "Corrected onset date of Condition resource."
 * entity[revisionEntry].role = #revision
 * entity[revisionEntry].what = Reference(Condition/ex-condition-initial)
 * entity[revisionEntry].what.display = "Initial Condition with Incorrect Onset Date"
 * entity[revisionEntry].what.identifier.system = "http://example.org/condition-identifiers"
 * entity[revisionEntry].what.identifier.value = "condition-diabetes-001"
-//* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(https://example.org/Patient/ex-patient)
 
 
 Instance: ex-patient-requested-correction
@@ -350,14 +350,14 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
 * agent[=].who = Reference(http:///example.org/Patient/ex-patient)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
-//* why = "Patient requested correction of birth date."
+* authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
+* why = "Patient requested correction of birth date."
 * entity[revisionEntry].role = #revision
 * entity[revisionEntry].what = Reference(Patient/ex-patient)
 * entity[revisionEntry].what.display = "Patient Resource with Corrected Birth Date"
 * entity[revisionEntry].what.identifier.system = "http://example.org/mrn"
 * entity[revisionEntry].what.identifier.value = "123456"
-//* patient = Reference(https://example.org/Patient/ex-patient)
-//* basedOn = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
-* entity[reasonBasedOn].role = #derivation
-* entity[reasonBasedOn].what = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
+* patient = Reference(https://example.org/Patient/ex-patient)
+* basedOn = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
+//* entity[reasonBasedOn].role = #derivation
+//* entity[reasonBasedOn].what = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
