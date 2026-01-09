@@ -7,6 +7,7 @@ may be made."
 * http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
 * http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
 * http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
+* http://terminology.hl7.org/CodeSystem/v3-ActReason#_ActHealthInformationManagementReason
 * http://hl7.org/fhir/resource-status#replaced
 * http://hl7.org/fhir/resource-status#refuted
 //* http://hl7.org/fhir/resource-status#amended // not in R4
@@ -350,7 +351,7 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
 * agent[=].who = Reference(http:///example.org/Patient/ex-patient)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
-* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
+* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
 //* why = "Patient requested correction of birth date."
 * entity[revisionEntry].role = #revision
 * entity[revisionEntry].what = Reference(Patient/ex-patient)
@@ -361,3 +362,77 @@ Usage: #example
 //* basedOn = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
 * entity[reasonBasedOn].role = #derivation
 * entity[reasonBasedOn].what = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
+
+Instance: ex-patient-forgotten
+InstanceOf: CorrectionProvenanceProfile
+Title: "Provenance for Patient Data Erasure Request"
+Description: "Provenance resource documenting a patient request for data erasure (right to be forgotten). This example shows how the IG for Patient Requested Corrections, which uses DocumentReference to document the request, can be linked to a Correction Provenance that documents the erasure of the Patient resource. The Provenance.agent is the Patient as the data subject requesting the erasure. The Provenance.entity lists ALL of the patient data removed to comply with the request."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(Patient/ex-patient)
+* recorded = "2024-06-01T18:00:00Z"
+* agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
+* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
+* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
+/* R4 */
+* activity.text = "Patient requested erasure of their data."
+* entity[reasonBasedOn].role = #derivation
+* entity[reasonBasedOn].what = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
+/* R4 */
+/* R6 */
+//* patient = Reference(https://example.org/Patient/ex-patient)
+//* basedOn[+] = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
+//* why = "Patient requested erasure of their data."
+/* R6 */
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Patient/ex-patient)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Observation/ex-observation-food)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-correction)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Condition/ex-corrected)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-wrong)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Condition/ex-condition-initial)
+
+
+Instance: ex-data-purge-due-to-age
+InstanceOf: CorrectionProvenanceProfile
+Title: "Provenance for purging Patient Data due to Age of that data and data retention policies"
+Description: "Provenance resource documenting the purging of patient data due to the age of that data and compliance with data retention policies. This example shows how the IG for Patient Data Purge can be linked to a Correction Provenance that documents the erasure of the Patient resource and associated data. The Provenance.agent is the Medical Records Officer responsible for ensuring compliance with data retention policies. The Provenance.entity lists ALL of the patient data removed to comply with the data retention policy."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(Patient/ex-patient)
+* recorded = "2024-06-01T18:00:00Z"
+* agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
+* agent[=].who = Reference(http://example.org/Practitioner/ex-medical-records-officer )
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
+* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#_ActHealthInformationManagementReason
+/* R4 */
+* activity.text = "Medical Records Retention Policy Compliance - Data Age"
+/* R4 */
+/* R6 */
+//* why = "Medical Records Retention Policy Compliance - Data Age"
+/* R6 */
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Patient/ex-patient)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Observation/ex-observation-food)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-correction)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Condition/ex-corrected)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-wrong)
+* entity[removalEntry][+].role = #removal
+* entity[removalEntry][=].what = Reference(Condition/ex-condition-initial)
+
+
+
