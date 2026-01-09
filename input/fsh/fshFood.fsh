@@ -409,7 +409,7 @@ Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Patient/ex-patient)
 * recorded = "2024-06-01T18:00:00Z"
-* agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
+* agent[+].type = http://snomed.info/sct#224547003
 * agent[=].who = Reference(http://example.org/Practitioner/ex-medical-records-officer )
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
 * reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#_ActHealthInformationManagementReason
@@ -433,6 +433,3 @@ Usage: #example
 * entity[removalEntry][=].what = Reference(Immunization/ex-immunization-wrong)
 * entity[removalEntry][+].role = #removal
 * entity[removalEntry][=].what = Reference(Condition/ex-condition-initial)
-
-
-
