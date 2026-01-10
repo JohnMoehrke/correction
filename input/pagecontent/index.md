@@ -46,6 +46,8 @@ Examples:
 - [Provenance AI corrected with replacement](Provenance-ex-ai-error-detection-replacement.html) Provenance resource documenting the detection of an error in FHIR data by an AI system, where the Observation was used to record a food allergy, but the AI system detected that this should have been an AllergyIntolerance resource instead. Thus the Observation is removed, and the AllergyIntolerance is created.
 - [Provenance patient correction](Provenance-ex-patient-requested-correction.html) Provenance resource documenting a patient requested correction of their birth date.
 - [Provenance revision correction](Provenance-ex-condition-corrected.html) Provenance resource documenting the revision of a Condition resource with corrected onset date. In this case the original Condition is revised. Thus the old version history/1 is indicated as revised, and the new version history/2 is indicated as the current version.
+
+additional examples that are NOT corrections, but related to data removal:
 - [Provenance Patient to be Forgotten](Provenance-ex-patient-forgotten.html) Provenance resource documenting that a Patient record is to be removed in order to comply with a data subject request under GDPR to be forgotten.
 - [Provenance Data Purge due to age](Provenance-ex-data-purge-due-to-age.html) Provenance resource documenting that a Patient record is to be removed in order to comply with data retention policies regarding data age.
 
