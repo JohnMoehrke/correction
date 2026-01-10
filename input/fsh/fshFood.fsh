@@ -377,28 +377,28 @@ Usage: #example
 * reason.text = "GDPR-ART17-ERASURE"
 /* R4 */
 * activity.text = "Patient requested erasure of their data."
-* entity[reasonBasedOn].role = #derivation
-* entity[reasonBasedOn].what = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
+* entity[+].role = #derivation
+* entity[=].what = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
 /* R4 */
 /* R6 */
 //* patient = Reference(https://example.org/Patient/ex-patient)
 //* basedOn[+] = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
 //* why = "Patient requested erasure of their data."
 /* R6 */
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Patient/ex-patient)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Observation/ex-observation-food)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-correction)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Condition/ex-corrected)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-wrong)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Condition/ex-condition-initial)
+* entity[+].role = #removal
+* entity[=].what = Reference(Patient/ex-patient)
+* entity[+].role = #removal
+* entity[=].what = Reference(Observation/ex-observation-food)
+* entity[+].role = #removal
+* entity[=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
+* entity[+].role = #removal
+* entity[=].what = Reference(Immunization/ex-immunization-correction)
+* entity[+].role = #removal
+* entity[=].what = Reference(Condition/ex-corrected)
+* entity[+].role = #removal
+* entity[=].what = Reference(Immunization/ex-immunization-wrong)
+* entity[+].role = #removal
+* entity[=].what = Reference(Condition/ex-condition-initial)
 
 
 Instance: ex-data-purge-due-to-age
@@ -419,17 +419,17 @@ Usage: #example
 /* R6 */
 //* why = "Medical Records Retention Policy Compliance - Data Age"
 /* R6 */
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Patient/ex-patient)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Observation/ex-observation-food)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-correction)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Condition/ex-corrected)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Immunization/ex-immunization-wrong)
-* entity[removalEntry][+].role = #removal
-* entity[removalEntry][=].what = Reference(Condition/ex-condition-initial)
+* entity[+].role = #removal
+* entity[=].what = Reference(Patient/ex-patient)
+* entity[+].role = #removal
+* entity[=].what = Reference(Observation/ex-observation-food)
+* entity[+].role = #removal
+* entity[=].what = Reference(AllergyIntolerance/ex-allergy-corrected)
+* entity[+].role = #removal
+* entity[=].what = Reference(Immunization/ex-immunization-correction)
+* entity[+].role = #removal
+* entity[=].what = Reference(Condition/ex-corrected)
+* entity[+].role = #removal
+* entity[=].what = Reference(Immunization/ex-immunization-wrong)
+* entity[+].role = #removal
+* entity[=].what = Reference(Condition/ex-condition-initial)
