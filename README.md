@@ -29,3 +29,4 @@ FHIR Core Ticket: https://jira.hl7.org/browse/FHIR-53783
 
 This is a trial IG to explore using Provenance to track corrections to data.
 
+IG Publisher bug report https://github.com/HL7/fhir-ig-publisher/issues/1225 that Provenance is not being rendered well at all.

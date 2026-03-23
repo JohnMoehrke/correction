@@ -47,6 +47,9 @@ Examples:
 - [Provenance patient correction](Provenance-ex-patient-requested-correction.html) Provenance resource documenting a patient requested correction of their birth date.
 - [Provenance revision correction](Provenance-ex-condition-corrected.html) Provenance resource documenting the revision of a Condition resource with corrected onset date. In this case the original Condition is revised. Thus the old version history/1 is indicated as revised, and the new version history/2 is indicated as the current version.
 
+additional examples that are NOT corrections, but related to data removal:
+- [Provenance Patient to be Forgotten](Provenance-ex-patient-forgotten.html) Provenance resource documenting that a Patient record is to be removed in order to comply with a data subject request under GDPR to be forgotten.
+- [Provenance Data Purge due to age](Provenance-ex-data-purge-due-to-age.html) Provenance resource documenting that a Patient record is to be removed in order to comply with data retention policies regarding data age.
 
 **changes from R4->R6 Provenance:**
 
@@ -83,9 +86,16 @@ I could not find an existing FHIR Document section that covers this topic. For e
 - Section code: `http://loinc.org#77472-9` (Information integrity attribute)
 - Section title: Corrections to Data
 - Section text: Text summary of the corrections made.
-- Section entries: Provenance resources documenting corrections made to the patient's data.
+- Section entries: Provenance resources documenting corrections made to the patient's data following [the correction Profile on Provenance](StructureDefinition-CorrectionProvenanceProfile.html).
 
 Note that loinc code 77472-9 is "Information integrity attribute", which seems appropriate for this section. I am open to other code suggestions.
+
+### Merge Patient
+
+Similar to a correction, a merge of two Patient resources also needs to be tracked with Provenance. In this case the Provenance would have `activity.coding` with code `MERGE` from [v3-ActReason](http://terminology.hl7.org/CodeSystem/v3-ActReason) to indicate that this Provenance is for a patient merge. The Provenance would point at the two Patient resources that were merged, and the textual reason for the merge can be in `why` in R6, or in `activity.text` in R4/R5.
+
+Example:
+- [Provenance patient merged](Provenance-ex-patient-merged.html) Provenance resource documenting the merge of two Patient resources.
 
 ### Source
 
