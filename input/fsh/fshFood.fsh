@@ -508,8 +508,9 @@ Usage: #example
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#MDATA
+* activity.text = "Merge Patient Records that were matched by SSN and confirmed by review, with the data linked to the non-surviving patient is also fixed up to point at the surviving patient."
 * reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
-//* why = "Merged two duplicate patient records into a single record to improve data quality."
+//* why = "Merge Patient Records that were matched by SSN and confirmed by review, with the data linked to the non-surviving patient is also fixed up to point at the surviving patient."
 * entity[+].role = #removal
 * entity[=].what = Reference(Patient/ex-patient-2)
 * entity[=].what.display = "Removed Duplicate Patient Record"
@@ -517,7 +518,7 @@ Usage: #example
 * entity[=].what.identifier.value = "MRN-002"
 * entity[+].role = #revision
 * entity[=].what = Reference(Patient/ex-patient-1)
-* entity[=].what.display = "Revised Patient Record after Merge"
+* entity[=].what.display = "Surviving Patient Record after Merge"
 * entity[=].what.identifier.system = "http://example.org/mrn"
 * entity[=].what.identifier.value = "MRN-001"
 * entity[+].role = #revision

@@ -90,6 +90,13 @@ I could not find an existing FHIR Document section that covers this topic. For e
 
 Note that loinc code 77472-9 is "Information integrity attribute", which seems appropriate for this section. I am open to other code suggestions.
 
+### Merge Patient
+
+Similar to a correction, a merge of two Patient resources also needs to be tracked with Provenance. In this case the Provenance would have `activity.coding` with code `MERGE` from [v3-ActReason](http://terminology.hl7.org/CodeSystem/v3-ActReason) to indicate that this Provenance is for a patient merge. The Provenance would point at the two Patient resources that were merged, and the textual reason for the merge can be in `why` in R6, or in `activity.text` in R4/R5.
+
+Example:
+- [Provenance patient merged](Provenance-ex-patient-merged.html) Provenance resource documenting the merge of two Patient resources.
+
 ### Source
 
 The source code for this Implementation Guide can be found on [GitHub](https://github.com/JohnMoehrke/correction)
