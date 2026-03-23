@@ -433,3 +433,96 @@ Usage: #example
 * entity[=].what = Reference(Immunization/ex-immunization-wrong)
 * entity[+].role = #removal
 * entity[=].what = Reference(Condition/ex-condition-initial)
+
+
+/*
+
+Example of using Provenance to track the Merging of two Patient resources. In this example, two Patient records are found to be duplicates and are merged together. The Provenance documents the merge activity, with the target pointing to the surviving Patient record after the merge, and the entities listing both the removed duplicate Patient record and the revised surviving Patient record that now contains merged information from both records.
+*/
+Instance: ex-patient-1
+InstanceOf: Patient
+Title: "Duplicate Patient Record 1"
+Description: "An example Patient resource representing the first of two duplicate patient records that are merged together.
+Note that after Merging, this record would typically have both .identifier values from the two original records to support traceability and de-duplication, but for simplicity this example only shows the identifier from the original record and not the merged identifier that would be created after the merge."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* name[+].use = #usual
+* name[=].family = "Smith"
+* name[=].given = "Jane"
+* gender = #female
+* identifier[+].system = "http://example.org/mrn"
+* identifier[=].value = "MRN-001"
+* identifier[+].system = "http://example.org/ssn"
+* identifier[+].value = "666-99-9999"
+
+Instance: ex-patient-2
+InstanceOf: Patient
+Title: "Duplicate Patient Record 2"
+Description: "An example Patient resource representing the second of two duplicate patient records that are merged together."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* name[+].use = #usual
+* name[=].family = "Smith"
+* name[=].given = "Janie"
+* address[+].line = "123 Main St"
+* address[=].city = "Anytown"
+* address[=].state = "NY"
+* address[=].postalCode = "12345"
+* identifier[+].system = "http://example.org/mrn"
+* identifier[=].value = "MRN-002"
+* identifier[+].system = "http://example.org/ssn"
+* identifier[+].value = "666-99-9999"
+
+Instance: ex-patient-2-bp
+InstanceOf: Observation
+Title: "Blood Pressure Observation for Duplicate Patient Record 2"
+Description: "An example Observation resource representing a blood pressure measurement for the second duplicate patient record. This resource is included to show that when the two duplicate patient records are merged, associated data like this blood pressure observation would also need to be fixed up to point at the surviving patient record after the merge."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* status = #final
+* category[+].coding[+] = http://terminology.hl7.org/CodeSystem/observation-category#vital-signs
+* category[=].text = "Vital Signs"
+* code.coding[+] = http://loinc.org#85354-9
+* code.text = "Blood Pressure"
+* subject = Reference(Patient/ex-patient-2)
+* effectiveDateTime = "2023-06-01T08:00:00Z"
+* component[+].code =  http://loinc.org#8480-6  "Systolic Blood Pressure"
+* component[=].valueQuantity = 120 'mm[Hg]'
+* component[=].valueQuantity.unit = "mmHg"
+* component[+].code =  http://loinc.org#8462-4  "Diastolic Blood Pressure"
+* component[=].valueQuantity = 80 'mm[Hg]'
+* component[=].valueQuantity.unit = "mmHg"
+* identifier[+].system = "http://example.org/observation-identifiers"
+* identifier[=].value = "obs-blood-pressure-001"
+* performer[+].reference = "http://example.org/Practitioner/ex-practitioner"
+
+
+Instance: ex-patient-merged
+InstanceOf: Provenance
+Title: "Provenance for Merging Duplicate Patient Records"
+Description: "Provenance resource documenting the merging of two duplicate patient records. The target points to the surviving Patient record after the merge, and the entities list both the removed duplicate Patient record and the revised surviving Patient record that now contains merged information from both records. The data associated with the removed Patient.id are also fixed up."
+Usage: #example
+* meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
+* target[+] = Reference(Patient/ex-patient-1)
+* recorded = "2024-06-01T19:00:00Z"
+* agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
+* agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
+* activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#MDATA
+* reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
+//* why = "Merged two duplicate patient records into a single record to improve data quality."
+* entity[+].role = #removal
+* entity[=].what = Reference(Patient/ex-patient-2)
+* entity[=].what.display = "Removed Duplicate Patient Record"
+* entity[=].what.identifier.system = "http://example.org/mrn"
+* entity[=].what.identifier.value = "MRN-002"
+* entity[+].role = #revision
+* entity[=].what = Reference(Patient/ex-patient-1)
+* entity[=].what.display = "Revised Patient Record after Merge"
+* entity[=].what.identifier.system = "http://example.org/mrn"
+* entity[=].what.identifier.value = "MRN-001"
+* entity[+].role = #revision
+* entity[=].what = Reference(Observation/ex-patient-2-bp)
+* entity[=].what.display = "Blood Pressure Observation from Patient-2 is fixed to point at Patient-1 after Merge"
+
+
+
