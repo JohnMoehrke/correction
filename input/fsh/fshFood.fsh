@@ -158,11 +158,11 @@ Usage: #example
 Instance: ex-immunization-wrong
 InstanceOf: Immunization
 Title:      "Immunization Example"
-Description: "An example Immunization resource representing a vaccination."
+Description: "An example Immunization resource representing a vaccination. With the WRONG CVX code."
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * status = #completed
-//* vaccineCode.coding[+] = http://hl7.org/fhir/sid/cvx#207
+* vaccineCode.coding[+] = http://hl7.org/fhir/sid/cvx#207
 * vaccineCode.text = "COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose"
 * patient = Reference(Patient/ex-patient)
 * occurrenceDateTime = "2023-03-01T09:00:00Z"
