@@ -105,7 +105,7 @@ Usage: #example
 * category[=].text = "Allergy"
 * code.coding[+] = http://loinc.org#48765-2
 * code.text = "Allergy to food"
-* subject = Reference(http://example.org/Patient/ex-patient)
+* subject =  Reference(Patient/ex-patient)
 * effectiveDateTime = "2023-01-15T10:00:00Z"
 * valueCodeableConcept.coding[+] = http://snomed.info/sct#235719002
 * valueCodeableConcept.text = "Allergy to peanuts"
@@ -128,7 +128,7 @@ Usage: #example
 * category[+] = http://hl7.org/fhir/allergy-intolerance-category#food
 * code.coding[+] = http://snomed.info/sct#235719002
 * code.text = "Allergy to peanuts"
-* patient = Reference(http://example.org/Patient/ex-patient)
+* patient =  Reference(Patient/ex-patient)
 * onsetDateTime = "2023-01-15T10:00:00Z"
 
 
@@ -349,7 +349,7 @@ Usage: #example
 * target[+] = Reference(Patient/ex-patient)
 * recorded = "2024-06-01T17:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
-* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* agent[=].who =  Reference(Patient/ex-patient)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
 * reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
 //* why = "Patient requested correction of birth date."
@@ -372,7 +372,7 @@ Usage: #example
 * target[+] = Reference(Patient/ex-patient)
 * recorded = "2024-06-01T18:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
-* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* agent[=].who =  Reference(Patient/ex-patient)
 * reason = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
 * reason.text = "GDPR-ART17-ERASURE"
 /* R4 */
@@ -453,7 +453,7 @@ Usage: #example
 * identifier[+].system = "http://example.org/mrn"
 * identifier[=].value = "MRN-001"
 * identifier[+].system = "http://example.org/ssn"
-* identifier[+].value = "666-99-9999"
+* identifier[=].value = "666-99-9999"
 
 Instance: ex-patient-2
 InstanceOf: Patient
@@ -471,7 +471,7 @@ Usage: #example
 * identifier[+].system = "http://example.org/mrn"
 * identifier[=].value = "MRN-002"
 * identifier[+].system = "http://example.org/ssn"
-* identifier[+].value = "666-99-9999"
+* identifier[=].value = "666-99-9999"
 
 Instance: ex-patient-2-bp
 InstanceOf: Observation
@@ -497,7 +497,7 @@ Usage: #example
 * performer[+].reference = "http://example.org/Practitioner/ex-practitioner"
 
 
-Instance: ex-patient-merged
+Instance: ex-provenance-patient-merged
 InstanceOf: Provenance
 Title: "Provenance for Merging Duplicate Patient Records"
 Description: "Provenance resource documenting the merging of two duplicate patient records. The target points to the surviving Patient record after the merge, and the entities list both the removed duplicate Patient record and the revised surviving Patient record that now contains merged information from both records. The data associated with the removed Patient.id are also fixed up."
