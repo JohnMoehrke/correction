@@ -26,6 +26,10 @@ Description: "A profile of the Provenance resource to document corrections made 
 * authorization MS
 * authorization from CorrectionPurposesVS
 * authorization ^comment = "The activity that resulted in the correction, e.g., data review or error detection."
+* why MS
+* why ^comment = "The reason for the correction, such as a description of the error or a reference to a resource that provides details about the correction."
+* patient MS
+* patient ^comment = "References the patient whose data was corrected, if applicable."
 * agent MS
 * agent ^comment = "The individual or system responsible for making the correction."
 * entity MS
@@ -149,7 +153,7 @@ Usage: #example
 * entity[removalEntry].what.display = "Incorrect Food Allergy Observation"
 * entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
 * entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 
 Instance: ex-immunization-wrong
 InstanceOf: Immunization
@@ -158,9 +162,9 @@ Description: "An example Immunization resource representing a vaccination."
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * status = #completed
-* vaccineCode.coding[+] = http://hl7.org/fhir/sid/cvx#207
+//* vaccineCode.coding[+] = http://hl7.org/fhir/sid/cvx#207
 * vaccineCode.text = "COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 * occurrenceDateTime = "2023-03-01T09:00:00Z"
 * performer[+].actor = Reference(https://example.org/Practitioner/ex-practitioner)
 * lotNumber = "12345"
@@ -181,7 +185,7 @@ Usage: #example
 * status = #completed
 * vaccineCode.coding[+] = http://hl7.org/fhir/sid/cvx#208
 * vaccineCode.text = "COVID-19, mRNA, LNP-S, PF, 50 mcg/0.25 mL dose"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 * occurrenceDateTime = "2023-03-01T09:00:00Z"
 * performer[+].actor = Reference(https://example.org/Practitioner/ex-practitioner)
 * lotNumber = "67890"
@@ -202,6 +206,7 @@ Description: "Provenance resource documenting the replacement of an immunization
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Immunization/ex-immunization-correction)
+* target[+] = Reference(Immunization/ex-immunization-wrong)
 * recorded = "2024-06-01T13:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
@@ -213,17 +218,14 @@ Usage: #example
 * entity[removalEntry].what.display = "Original Immunization Record with Errors"
 * entity[removalEntry].what.identifier.system = "http://example.org/immunization-identifiers"
 * entity[removalEntry].what.identifier.value = "immu-covid19-001"
-* patient = Reference(https://example.org/Patient/ex-patient)
-
 /* R4 */
-
 //* entity[reasonBasedOn].role = #derivation
 //* entity[reasonBasedOn].what = Reference(DocumentReference/ex-documentation-immunization-correction)
 //* entity[reasonBasedOn].what.display = "Documentation of Immunization Correction"
-
 /* R4 */
 /* R6 */
 * basedOn[+] = Reference(DocumentReference/ex-documentation-immunization-correction)
+* patient = Reference(Patient/ex-patient)
 /* R6 */
 
 Instance: ex-documentation-immunization-correction
@@ -235,7 +237,7 @@ Usage: #example
 * status = #current
 * type.coding[+] = http://loinc.org#34133-9
 * type.text = "Immunization record correction documentation"
-* subject = Reference(https://example.org/Patient/ex-patient)
+* subject = Reference(Patient/ex-patient)
 * date = "2024-06-01T13:00:00Z"
 * content[+].attachment.contentType = #application/pdf
 * content[=].attachment.url = "http://example.org/documents/immunization-correction.pdf"
@@ -252,6 +254,7 @@ Description: "Provenance resource documenting the detection of an error in FHIR 
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
+* target[+] = Reference(Observation/ex-observation-food)
 * recorded = "2024-06-01T14:00:00Z"
 * agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
 * agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier 
@@ -263,7 +266,7 @@ Usage: #example
 * entity[removalEntry].what.display = "Food Allergy Observation with Detected Error"
 * entity[removalEntry].what.identifier.system = "http://example.org/observation-identifiers"
 * entity[removalEntry].what.identifier.value = "obs-food-allergy-001"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 
 Instance: ex-ai-duplicate-detection
 InstanceOf: CorrectionProvenanceProfile
@@ -272,6 +275,7 @@ Description: "Provenance resource documenting the detection of duplicate FHIR da
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
+* target[+] = Reference(Observation/ex-observation-food)
 * recorded = "2024-06-01T15:00:00Z"
 * agent[+].who = Reference(http:///example.org/Device/ex-ai-system)
 * agent[=].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#verifier
@@ -288,7 +292,7 @@ Usage: #example
 * entity[revisionEntry].what.display = "Revised AllergyIntolerance after Duplicate Detection"
 * entity[revisionEntry].what.identifier.system = "http://example.org/allergyintolerance-identifiers"
 * entity[revisionEntry].what.identifier.value = "allergy-peanut-001"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 
 
 /* Condition foo has a version/history 1 that is found to be incorrect, so a revision to version/history 2 is created to correct the error */
@@ -301,7 +305,7 @@ Usage: #example
 * clinicalStatus.coding[+] = http://terminology.hl7.org/CodeSystem/condition-clinical#active
 * code.coding[+] = http://snomed.info/sct#44054006
 * code.text = "Diabetes mellitus type 2"
-* subject = Reference(https://example.org/Patient/ex-patient)
+* subject = Reference(Patient/ex-patient)
 * onsetDateTime = "2020-05-20T00:00:00Z"
 * identifier.system = "http://example.org/condition-identifiers"
 * identifier.value = "condition-diabetes-001"
@@ -315,7 +319,7 @@ Usage: #example
 * clinicalStatus.coding[+] = http://terminology.hl7.org/CodeSystem/condition-clinical#active
 * code.coding[+] = http://snomed.info/sct#44054006
 * code.text = "Diabetes mellitus type 2"
-* subject = Reference(https://example.org/Patient/ex-patient)
+* subject = Reference(Patient/ex-patient)
 * onsetDateTime = "2019-05-20T00:00:00Z"  // Corrected onset date
 * identifier.system = "http://example.org/condition-identifiers"
 * identifier.value = "condition-diabetes-001"
@@ -337,7 +341,7 @@ Usage: #example
 * entity[revisionEntry].what.display = "Initial Condition with Incorrect Onset Date"
 * entity[revisionEntry].what.identifier.system = "http://example.org/condition-identifiers"
 * entity[revisionEntry].what.identifier.value = "condition-diabetes-001"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 
 
 Instance: ex-patient-requested-correction
@@ -349,7 +353,7 @@ Usage: #example
 * target[+] = Reference(Patient/ex-patient)
 * recorded = "2024-06-01T17:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
-* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* agent[=].who = Reference(Patient/ex-patient)
 * activity = http://terminology.hl7.org/CodeSystem/v3-ActReason#FIXDATA
 * authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATSFTY
 * why = "Patient requested correction of birth date."
@@ -358,7 +362,7 @@ Usage: #example
 * entity[revisionEntry].what.display = "Patient Resource with Corrected Birth Date"
 * entity[revisionEntry].what.identifier.system = "http://example.org/mrn"
 * entity[revisionEntry].what.identifier.value = "123456"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 * basedOn = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
 //* entity[reasonBasedOn].role = #derivation
 //* entity[reasonBasedOn].what = Reference(https://example.org/Communication/ex-communication-birthdate-correction)
@@ -370,12 +374,18 @@ Description: "Provenance resource documenting a patient request for data erasure
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Patient/ex-patient)
+* target[+] = Reference(Observation/ex-observation-food)
+* target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
+* target[+] = Reference(Immunization/ex-immunization-correction)
+* target[+] = Reference(Condition/ex-corrected)
+* target[+] = Reference(Immunization/ex-immunization-wrong)
+* target[+] = Reference(Condition/ex-condition-initial)
 * recorded = "2024-06-01T18:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/extra-security-role-type#datasubject
-* agent[=].who = Reference(http:///example.org/Patient/ex-patient)
+* agent[=].who = Reference(Patient/ex-patient)
 * authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#PATRQT
 * authorization.concept.text = "GDPR-ART17-ERASURE"
-* patient = Reference(https://example.org/Patient/ex-patient)
+* patient = Reference(Patient/ex-patient)
 * basedOn[+] = Reference(https://example.org/DocumentReference/ex-data-erasure-request)
 * why = "Patient requested erasure of their data."
 * entity[+].role = #removal
@@ -401,6 +411,12 @@ Description: "Provenance resource documenting the purging of patient data due to
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Patient/ex-patient)
+* target[+] = Reference(Observation/ex-observation-food)
+* target[+] = Reference(AllergyIntolerance/ex-allergy-corrected)
+* target[+] = Reference(Immunization/ex-immunization-correction)
+* target[+] = Reference(Condition/ex-corrected)
+* target[+] = Reference(Immunization/ex-immunization-wrong)
+* target[+] = Reference(Condition/ex-condition-initial)
 * recorded = "2024-06-01T18:00:00Z"
 * agent[+].type = http://snomed.info/sct#224547003
 * agent[=].who = Reference(http://example.org/Practitioner/ex-medical-records-officer )
@@ -411,6 +427,7 @@ Usage: #example
 /* R4 */
 /* R6 */
 * why = "Medical Records Retention Policy Compliance - Data Age"
+* patient = Reference(Patient/ex-patient)
 /* R6 */
 * entity[+].role = #removal
 * entity[=].what = Reference(Patient/ex-patient)
@@ -446,7 +463,7 @@ Usage: #example
 * identifier[+].system = "http://example.org/mrn"
 * identifier[=].value = "MRN-001"
 * identifier[+].system = "http://example.org/ssn"
-* identifier[+].value = "666-99-9999"
+* identifier[=].value = "666-99-9999"
 
 Instance: ex-patient-2
 InstanceOf: Patient
@@ -464,7 +481,7 @@ Usage: #example
 * identifier[+].system = "http://example.org/mrn"
 * identifier[=].value = "MRN-002"
 * identifier[+].system = "http://example.org/ssn"
-* identifier[+].value = "666-99-9999"
+* identifier[=].value = "666-99-9999"
 
 Instance: ex-patient-2-bp
 InstanceOf: Observationbp
@@ -489,13 +506,15 @@ Usage: #example
 * performer[+].reference = "http://example.org/Practitioner/ex-practitioner"
 
 
-Instance: ex-patient-merged
+Instance: ex-provenance-patient-merged
 InstanceOf: Provenance
 Title: "Provenance for Merging Duplicate Patient Records"
 Description: "Provenance resource documenting the merging of two duplicate patient records. The target points to the surviving Patient record after the merge, and the entities list both the removed duplicate Patient record and the revised surviving Patient record that now contains merged information from both records. The data associated with the removed Patient.id are also fixed up."
 Usage: #example
 * meta.security = http://terminology.hl7.org/CodeSystem/v3-ActReason#HTEST
 * target[+] = Reference(Patient/ex-patient-1)
+* target[+] = Reference(Patient/ex-patient-2) 
+* target[+] = Reference(Observation/ex-patient-2-bp) 
 * recorded = "2024-06-01T19:00:00Z"
 * agent[+].type = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author
 * agent[=].who = Reference(http:///example.org/Practitioner/ex-practitioner)
@@ -503,6 +522,7 @@ Usage: #example
 //* activity.text = "Merge Patient Records that were matched by SSN and confirmed by review, with the data linked to the non-surviving patient is also fixed up to point at the surviving patient."
 * authorization.concept = http://terminology.hl7.org/CodeSystem/v3-ActReason#HQUALIMP
 * why = "Merge Patient Records that were matched by SSN and confirmed by review, with the data linked to the non-surviving patient is also fixed up to point at the surviving patient."
+* patient = Reference(Patient/ex-patient-1)
 * entity[+].role = #removal
 * entity[=].what = Reference(Patient/ex-patient-2)
 * entity[=].what.display = "Removed Duplicate Patient Record"
